@@ -35,11 +35,11 @@ public class HardwareKeys extends SettingsPreferenceFragment implements OnPrefer
     private static final String HARDWARE_KEYS_HOME_LONG_PRESS = "hardware_keys_home_long_press";
     private static final String HARDWARE_KEYS_MENU_PRESS = "hardware_keys_menu_press";
     private static final String HARDWARE_KEYS_MENU_LONG_PRESS = "hardware_keys_menu_long_press";
-    private static final String HARDWARE_KEYS_SEARCH_PRESS = "hardware_keys_search_press";
-    private static final String HARDWARE_KEYS_SEARCH_LONG_PRESS = "hardware_keys_search_long_press";
+    private static final String HARDWARE_KEYS_ASSIST_PRESS = "hardware_keys_search_press";
+    private static final String HARDWARE_KEYS_ASSIST_LONG_PRESS = "hardware_keys_search_long_press";
     private static final String HARDWARE_KEYS_APP_SWITCH_PRESS = "hardware_keys_app_switch_press";
     private static final String HARDWARE_KEYS_APP_SWITCH_LONG_PRESS = "hardware_keys_app_switch_long_press";
-    private static final String HARDWARE_KEYS_SHOW_OVERFLOW = "hardware_keys_show_overflow";
+    //private static final String HARDWARE_KEYS_SHOW_OVERFLOW = "hardware_keys_show_overflow";
 
     // Available custom actions to perform on a key press.
     // Must match values for KEY_HOME_LONG_PRESS_ACTION in:
@@ -47,15 +47,15 @@ public class HardwareKeys extends SettingsPreferenceFragment implements OnPrefer
     private static final int ACTION_NOTHING = 0;
     private static final int ACTION_MENU = 1;
     private static final int ACTION_APP_SWITCH = 2;
-    private static final int ACTION_SEARCH = 3;
-    private static final int ACTION_VOICE_SEARCH = 4;
+    private static final int ACTION_ASSIST = 3;
+    //private static final int ACTION_VOICE_ASSIST = 4;
 
     // Masks for checking presence of hardware keys.
     // Must match values in frameworks/base/core/res/res/values/config.xml
     private static final int KEY_MASK_HOME = 0x01;
     private static final int KEY_MASK_BACK = 0x02;
     private static final int KEY_MASK_MENU = 0x04;
-    private static final int KEY_MASK_SEARCH = 0x08;
+    private static final int KEY_MASK_ASSIST = 0x08;
     private static final int KEY_MASK_APP_SWITCH = 0x10;
 
     private ListPreference mHomeLongPressAction;
@@ -65,7 +65,7 @@ public class HardwareKeys extends SettingsPreferenceFragment implements OnPrefer
     private ListPreference mSearchLongPressAction;
     private ListPreference mAppSwitchPressAction;
     private ListPreference mAppSwitchLongPressAction;
-    private CheckBoxPreference mShowActionOverflow;
+    //private CheckBoxPreference mShowActionOverflow;
 
     private boolean mDisableToast;
 
@@ -77,7 +77,7 @@ public class HardwareKeys extends SettingsPreferenceFragment implements OnPrefer
                 com.android.internal.R.integer.config_deviceHardwareKeys);
         final boolean hasHomeKey = (deviceKeys & KEY_MASK_HOME) != 0;
         final boolean hasMenuKey = (deviceKeys & KEY_MASK_MENU) != 0;
-        final boolean hasSearchKey = (deviceKeys & KEY_MASK_SEARCH) != 0;
+        final boolean hasSearchKey = (deviceKeys & KEY_MASK_ASSIST) != 0;
         final boolean hasAppSwitchKey = (deviceKeys & KEY_MASK_APP_SWITCH) != 0;
 
         addPreferencesFromResource(R.xml.hardware_keys);
@@ -89,15 +89,15 @@ public class HardwareKeys extends SettingsPreferenceFragment implements OnPrefer
         mMenuLongPressAction = (ListPreference) getPreferenceScreen().findPreference(
                 HARDWARE_KEYS_MENU_LONG_PRESS);
         mSearchPressAction = (ListPreference) getPreferenceScreen().findPreference(
-                HARDWARE_KEYS_SEARCH_PRESS);
+                HARDWARE_KEYS_ASSIST_PRESS);
         mSearchLongPressAction = (ListPreference) getPreferenceScreen().findPreference(
-                HARDWARE_KEYS_SEARCH_LONG_PRESS);
+                HARDWARE_KEYS_ASSIST_LONG_PRESS);
         mAppSwitchPressAction = (ListPreference) getPreferenceScreen().findPreference(
                 HARDWARE_KEYS_APP_SWITCH_PRESS);
         mAppSwitchLongPressAction = (ListPreference) getPreferenceScreen().findPreference(
                 HARDWARE_KEYS_APP_SWITCH_LONG_PRESS);
-        mShowActionOverflow = (CheckBoxPreference) getPreferenceScreen().findPreference(
-                HARDWARE_KEYS_SHOW_OVERFLOW);
+        //mShowActionOverflow = (CheckBoxPreference) getPreferenceScreen().findPreference(
+        //        HARDWARE_KEYS_SHOW_OVERFLOW);
         PreferenceCategory bindingsCategory = (PreferenceCategory) findPreference(
                 HARDWARE_KEYS_CATEGORY_BINDINGS);
 
@@ -124,7 +124,7 @@ public class HardwareKeys extends SettingsPreferenceFragment implements OnPrefer
                         Settings.System.KEY_MENU_LONG_PRESS_ACTION, ACTION_NOTHING);
             } else {
                 menuLongPressAction = Settings.System.getInt(getContentResolver(),
-                        Settings.System.KEY_MENU_LONG_PRESS_ACTION, ACTION_SEARCH);
+                        Settings.System.KEY_MENU_LONG_PRESS_ACTION, ACTION_ASSIST);
             }
             mMenuLongPressAction.setValue(Integer.toString(menuLongPressAction));
             mMenuLongPressAction.setSummary(mMenuLongPressAction.getEntry());
@@ -136,13 +136,13 @@ public class HardwareKeys extends SettingsPreferenceFragment implements OnPrefer
 
         if (hasSearchKey) {
             int searchPressAction = Settings.System.getInt(getContentResolver(),
-                    Settings.System.KEY_SEARCH_ACTION, ACTION_SEARCH);
+                    Settings.System.KEY_ASSIST_ACTION, ACTION_ASSIST);
             mSearchPressAction.setValue(Integer.toString(searchPressAction));
             mSearchPressAction.setSummary(mSearchPressAction.getEntry());
             mSearchPressAction.setOnPreferenceChangeListener(this);
 
             int searchLongPressAction = Settings.System.getInt(getContentResolver(),
-                    Settings.System.KEY_SEARCH_LONG_PRESS_ACTION, ACTION_VOICE_SEARCH);
+                    Settings.System.KEY_ASSIST_LONG_PRESS_ACTION, ACTION_ASSIST);
             mSearchLongPressAction.setValue(Integer.toString(searchLongPressAction));
             mSearchLongPressAction.setSummary(mSearchLongPressAction.getEntry());
             mSearchLongPressAction.setOnPreferenceChangeListener(this);
@@ -168,9 +168,9 @@ public class HardwareKeys extends SettingsPreferenceFragment implements OnPrefer
             bindingsCategory.removePreference(mAppSwitchLongPressAction);
         }
 
-        mShowActionOverflow.setChecked((Settings.System.getInt(getActivity().
-                getApplicationContext().getContentResolver(),
-                Settings.System.UI_FORCE_OVERFLOW_BUTTON, 0) == 1));
+        //mShowActionOverflow.setChecked((Settings.System.getInt(getActivity().
+        //        getApplicationContext().getContentResolver(),
+        //        Settings.System.UI_FORCE_OVERFLOW_BUTTON, 0) == 1));
     }
 
     public boolean onPreferenceChange(Preference preference, Object newValue) {
@@ -200,14 +200,14 @@ public class HardwareKeys extends SettingsPreferenceFragment implements OnPrefer
             mSearchPressAction.setSummary(getResources().getStringArray(
                     R.array.hardware_keys_action_entries)[searchPressAction]);
             Settings.System.putInt(getContentResolver(),
-                    Settings.System.KEY_SEARCH_ACTION, searchPressAction);
+                    Settings.System.KEY_ASSIST_ACTION, searchPressAction);
             return true;
         } else if (preference == mSearchLongPressAction) {
             int searchLongPressAction = Integer.valueOf((String) newValue);
             mSearchLongPressAction.setSummary(getResources().getStringArray(
                     R.array.hardware_keys_action_entries)[searchLongPressAction]);
             Settings.System.putInt(getContentResolver(),
-                    Settings.System.KEY_SEARCH_LONG_PRESS_ACTION, searchLongPressAction);
+                    Settings.System.KEY_ASSIST_LONG_PRESS_ACTION, searchLongPressAction);
             return true;
         } else if (preference == mAppSwitchPressAction) {
             int appSwitchPressAction = Integer.valueOf((String) newValue);
@@ -228,7 +228,7 @@ public class HardwareKeys extends SettingsPreferenceFragment implements OnPrefer
     }
 
     public boolean onPreferenceTreeClick(PreferenceScreen preferenceScreen, Preference preference) {
-        if (preference == mShowActionOverflow) {
+        /*if (preference == mShowActionOverflow) {
             Settings.System.putInt(getContentResolver(), Settings.System.UI_FORCE_OVERFLOW_BUTTON,
                     mShowActionOverflow.isChecked() ? 1 : 0);
             // Only show toast every other click
@@ -238,7 +238,7 @@ public class HardwareKeys extends SettingsPreferenceFragment implements OnPrefer
             }
             mDisableToast = !mDisableToast;
             return true;
-        }
+        }*/
         return false;
     }
 }

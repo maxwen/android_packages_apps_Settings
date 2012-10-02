@@ -73,7 +73,7 @@
 
     </PreferenceCategory>
 
-    <PreferenceCategory
+    <!--<PreferenceCategory
         android:title="@string/additional_options_title">
 
        <CheckBoxPreference
@@ -82,6 +82,6 @@
             android:summary="@string/hardware_keys_show_overflow_summary"
             android:defaultValue="false" />
 
-    </PreferenceCategory>
+    </PreferenceCategory>-->
 
 </PreferenceScreen>
