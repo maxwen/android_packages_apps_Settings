@@ -1271,7 +1271,8 @@
         <item>@string/hardware_keys_action_menu</item>
         <item>@string/hardware_keys_action_app_switch</item>
         <item>@string/hardware_keys_action_search</item>
-        <!--<item>@string/hardware_keys_action_voice_search</item>-->
+        <!--<item>@string/hardware_keys_action_voice_search</item>
+        <item>@string/hardware_keys_action_in_app_search</item>-->
     </string-array>
 
     <string-array name="hardware_keys_action_values" translatable="false">
@@ -1279,7 +1280,8 @@
         <item>1</item>
         <item>2</item>
         <item>3</item>
-        <!--<item>4</item> -->   
+        <!--<item>4</item>
+        <item>5</item>-->
     </string-array>
 
 
