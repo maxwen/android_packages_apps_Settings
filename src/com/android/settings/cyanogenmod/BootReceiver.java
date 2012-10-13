@@ -35,6 +35,7 @@ public class BootReceiver extends BroadcastReceiver {
 
     private static final String CPU_SETTINGS_PROP = "sys.cpufreq.restored";
     private static final String IOSCHED_SETTINGS_PROP = "sys.iosched.restored";
+    private static final String VOLTAGE_SETTINGS_PROP = "sys.voltage.restored";
     private static final String KSM_SETTINGS_PROP = "sys.ksm.restored";
 
     @Override
@@ -53,6 +54,14 @@ public class BootReceiver extends BroadcastReceiver {
             configureIOSched(ctx);
         } else {
             SystemProperties.set(IOSCHED_SETTINGS_PROP, "false");
+        }
+
+        if (SystemProperties.getBoolean(VOLTAGE_SETTINGS_PROP, false) == false
+                && intent.getAction().equals(Intent.ACTION_BOOT_COMPLETED)) {
+            SystemProperties.set(VOLTAGE_SETTINGS_PROP, "true");
+            configureVoltage(ctx);
+        } else {
+            SystemProperties.set(VOLTAGE_SETTINGS_PROP, "false");
         }
 
         if (Utils.fileExists(MemoryManagement.KSM_RUN_FILE)) {
@@ -129,6 +138,22 @@ public class BootReceiver extends BroadcastReceiver {
                 Utils.fileWriteOneLine(IOScheduler.IOSCHED_LIST_FILE, ioscheduler);
             }
             Log.d(TAG, "I/O scheduler settings restored.");
+        }
+    }
+
+    private void configureVoltage(Context ctx) {
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(ctx);
+
+        if (prefs.getBoolean(VoltageControlSettings.KEY_APPLY_BOOT, false) == false) {
+            Log.i(TAG, "Restore disabled by user preference.");
+            return;
+        }
+
+        final List<VoltageControlSettings.Voltage> volts = VoltageControlSettings
+                    .getVolts(prefs);
+        if(!volts.isEmpty()){
+            VoltageControlSettings.applyVoltages(volts);            
+            Log.d(TAG, "Voltage settings restored.");
         }
     }
 
