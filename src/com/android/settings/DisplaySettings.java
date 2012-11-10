@@ -24,6 +24,7 @@ import android.content.ContentResolver;
 import android.content.Context;
 import android.content.res.Configuration;
 import android.content.res.Resources;
+import android.content.SharedPreferences;
 import android.database.ContentObserver;
 import android.os.Bundle;
 import android.os.RemoteException;
@@ -33,6 +34,7 @@ import android.preference.ListPreference;
 import android.preference.Preference;
 import android.preference.PreferenceCategory;
 import android.preference.PreferenceScreen;
+import android.preference.PreferenceManager;
 import android.provider.Settings;
 import android.provider.Settings.SettingNotFoundException;
 import android.util.Log;
@@ -41,6 +43,14 @@ import com.android.internal.view.RotationPolicy;
 import com.android.settings.DreamSettings;
 import com.android.settings.cyanogenmod.DisplayRotation;
 import java.util.ArrayList;
+
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
+
+import com.android.settings.Utils;
 
 public class DisplaySettings extends SettingsPreferenceFragment implements
         Preference.OnPreferenceChangeListener {
@@ -63,6 +73,9 @@ public class DisplaySettings extends SettingsPreferenceFragment implements
     private static final String KEY_ELECTRON_BEAM_CATEGORY_ANIMATION = "category_animation_options";
     private static final String KEY_WAKEUP_CATEGORY = "category_wakeup_options";
     private static final String KEY_VOLUME_WAKE = "pref_volume_wake";
+    private static final String SWEEP2WAKE_WAKE = "pref_sweep2wake_wake";
+    public static final String SWEEP2WAKE_FILE = "/sys/android_touch/sweep2wake";
+    public static final String SWEEP2WAKE_WAKE_VALUE = "pref_sweep2wake_wake_value";
 
     private static final String ROTATION_ANGLE_0 = "0";
     private static final String ROTATION_ANGLE_90 = "90";
@@ -75,6 +88,7 @@ public class DisplaySettings extends SettingsPreferenceFragment implements
     private CheckBoxPreference mVolumeWake;
     private CheckBoxPreference mElectronBeamAnimationOn;
     private CheckBoxPreference mElectronBeamAnimationOff;
+    private CheckBoxPreference mSweep2WakeWake;    
     private PreferenceScreen mNotificationPulse;
     private PreferenceScreen mBatteryPulse;
 
@@ -190,17 +204,34 @@ public class DisplaySettings extends SettingsPreferenceFragment implements
             getPreferenceScreen().removePreference((PreferenceCategory) findPreference(KEY_ELECTRON_BEAM_CATEGORY_ANIMATION));
         }
 */
+        int removeWakeupCategory=0;
         mVolumeWake = (CheckBoxPreference) findPreference(KEY_VOLUME_WAKE);
         if (mVolumeWake != null) {
             if (!getResources().getBoolean(R.bool.config_show_volumeRockerWake)) {
                 getPreferenceScreen().removePreference(mVolumeWake);
-                getPreferenceScreen().removePreference((PreferenceCategory) findPreference(KEY_WAKEUP_CATEGORY));
+                removeWakeupCategory=removeWakeupCategory+1;
             } else {
                 mVolumeWake.setChecked(Settings.System.getInt(resolver,
                         Settings.System.VOLUME_WAKE_SCREEN, 0) == 1);
             }
         }
 
+        mSweep2WakeWake = (CheckBoxPreference) findPreference(SWEEP2WAKE_WAKE);
+        if (mSweep2WakeWake != null) {
+            if (!getResources().getBoolean(R.bool.config_show_sweep2WakeWake) || !Utils.fileExists(SWEEP2WAKE_FILE)) {
+                getPreferenceScreen().removePreference(mSweep2WakeWake);
+                removeWakeupCategory=removeWakeupCategory+1;
+            } else {
+                String value = Utils.fileReadOneLine(SWEEP2WAKE_FILE);
+                if (value != null) {
+                    int currentValue = new Integer(value).intValue();
+                    mSweep2WakeWake.setChecked(currentValue == 1);
+                }
+            }
+        }
+        if (removeWakeupCategory == 2) {
+            getPreferenceScreen().removePreference((PreferenceCategory) findPreference(KEY_WAKEUP_CATEGORY));
+        }
     }
 
     private void updateDisplayRotationPreferenceDescription() {
@@ -403,6 +434,14 @@ public class DisplaySettings extends SettingsPreferenceFragment implements
         } else if (preference == mVolumeWake) {
             Settings.System.putInt(getContentResolver(), Settings.System.VOLUME_WAKE_SCREEN,
                     mVolumeWake.isChecked() ? 1 : 0);
+            return true;
+        } else if (preference == mSweep2WakeWake) {
+            Log.d(TAG, "maxwen: "+ SWEEP2WAKE_FILE +" " + (mSweep2WakeWake.isChecked() ? "1" : "0"));
+            Utils.fileWriteOneLine(SWEEP2WAKE_FILE, mSweep2WakeWake.isChecked() ? "1" : "0");
+            SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
+            SharedPreferences.Editor editor = preferences.edit();
+            editor.putInt(SWEEP2WAKE_WAKE_VALUE, mSweep2WakeWake.isChecked() ? 1 : 0);
+            editor.commit();
             return true;
         } else if (preference == mLockScreenRotation) {
             Settings.System.putInt(getContentResolver(), Settings.System.LOCKSCREEN_ROTATION,

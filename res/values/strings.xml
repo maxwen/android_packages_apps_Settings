@@ -4881,6 +4881,8 @@
     <string name="display_category_wakeup_options_title">Wakeup options</string>
     <string name="pref_volume_wake_title">Volume rocker wake</string>
     <string name="pref_volume_wake_summary">Pressing the volume rocker up/down will wake the device</string>
+    <string name="pref_sweep2wake_wake_title">Sweep2Wake</string>
+    <string name="pref_sweep2wake_wake_summary">Sliding over the button area will sleep/wake the device</string>
 
     <string name="ok">OK</string>
 
