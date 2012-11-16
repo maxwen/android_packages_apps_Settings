@@ -163,7 +163,6 @@ public class DisplaySettings extends SettingsPreferenceFragment implements
             }
         }
 
-/**
         mElectronBeamAnimationOn = (CheckBoxPreference) findPreference(KEY_ELECTRON_BEAM_ANIMATION_ON);
         mElectronBeamAnimationOff = (CheckBoxPreference) findPreference(KEY_ELECTRON_BEAM_ANIMATION_OFF);
         mElectronBeamAnimationOn.setChecked(Settings.System.getInt(resolver,
@@ -189,7 +188,7 @@ public class DisplaySettings extends SettingsPreferenceFragment implements
               !getResources().getBoolean(com.android.internal.R.bool.config_screenOffAnimation)) {
             getPreferenceScreen().removePreference((PreferenceCategory) findPreference(KEY_ELECTRON_BEAM_CATEGORY_ANIMATION));
         }
-*/
+
         mVolumeWake = (CheckBoxPreference) findPreference(KEY_VOLUME_WAKE);
         if (mVolumeWake != null) {
             if (!getResources().getBoolean(R.bool.config_show_volumeRockerWake)) {

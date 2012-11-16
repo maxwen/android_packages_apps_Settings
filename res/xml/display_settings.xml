@@ -61,7 +61,6 @@
             android:title="@string/battery_light_title"
             android:fragment="com.android.settings.notificationlight.BatteryLightSettings" />
 
-<!-- Remove until merged from CM9
         <PreferenceCategory
             android:key="category_animation_options"
             android:title="@string/display_category_animation_options_title"/>
@@ -75,7 +74,7 @@
             android:key="electron_beam_animation_off"
             android:title="@string/display_electron_beam_animation_off_title"
             android:defaultValue="true" />
--->
+
         <PreferenceCategory
             android:key="category_wakeup_options"
             android:title="@string/display_category_wakeup_options_title"/>
