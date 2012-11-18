@@ -29,6 +29,9 @@
          Setting to false will disable Volume Rocker Wake support -->
     <bool name="config_show_volumeRockerWake">true</bool>
 
+    <!-- Sweep2Wake Support -->
+    <bool name="config_show_sweep2WakeWake">true</bool>
+
     <!-- Show Expanded Desktop preference -->
     <bool name="config_show_expandedDesktop">false</bool>
 

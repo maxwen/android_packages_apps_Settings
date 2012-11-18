@@ -4692,6 +4692,23 @@
     <string name="io_sched_set_on_boot">Set on boot</string>
     <string name="io_sched_set_on_boot_summary">Restore the I/O scheduler settings on boot</string>
 
+    <!-- Performance | Voltage Control -->
+    <string name="voltage_cpu_voltage">Voltage control</string>
+    <string name="voltage_cpu_voltage_summary">Change CPU voltage of each frequency</string>
+    <string name="voltage_ps_volt_mhz_voltage">" MHz Voltage"</string>
+    <string name="voltage_ps_volt_save">"Save"</string>
+    <string name="voltage_ps_volt_current_voltage">"Current voltage: "</string>
+    <string name="voltage_ps_volt_setting_to_apply">"Setting to apply: "</string>
+    <string name="voltage_ps_volt_control">Set voltages for each frequency</string>
+    <string name="voltage_not_supported">Your kernel does not support voltage control</string>
+    <string name="voltage_apply_values">Apply</string>
+    <string name="voltage_reset_values">Defaults</string>
+    <string name="voltage_freq">Frequency</string>
+    <string name="voltage_current">mV current</string>
+    <string name="voltage_saved">mV saved</string>
+    <string name="voltage_set_on_boot">Set on boot</string>
+    <string name="voltage_set_on_boot_summary">Restore the voltage settings on boot</string>
+
     <!-- Memory Management -->
     <string name="memory_management_title">Memory management</string>
     <string name="memory_management_summary">Customize the usage of memory to alter system performance</string>
@@ -4864,6 +4881,8 @@
     <string name="display_category_wakeup_options_title">Wakeup options</string>
     <string name="pref_volume_wake_title">Volume rocker wake</string>
     <string name="pref_volume_wake_summary">Pressing the volume rocker up/down will wake the device</string>
+    <string name="pref_sweep2wake_wake_title">Sweep2Wake</string>
+    <string name="pref_sweep2wake_wake_summary">Sliding over the button area will sleep/wake the device</string>
 
     <string name="ok">OK</string>
 
