@@ -86,7 +86,6 @@ public class DisplaySettings extends SettingsPreferenceFragment implements
 
     private CheckBoxPreference mLockScreenRotation;
     private CheckBoxPreference mVolumeWake;
-    private CheckBoxPreference mElectronBeamAnimationOn;
     private CheckBoxPreference mElectronBeamAnimationOff;
     private CheckBoxPreference mSweep2WakeWake;    
     private PreferenceScreen mNotificationPulse;
@@ -177,21 +176,10 @@ public class DisplaySettings extends SettingsPreferenceFragment implements
             }
         }
 
-/**
-        mElectronBeamAnimationOn = (CheckBoxPreference) findPreference(KEY_ELECTRON_BEAM_ANIMATION_ON);
         mElectronBeamAnimationOff = (CheckBoxPreference) findPreference(KEY_ELECTRON_BEAM_ANIMATION_OFF);
-        mElectronBeamAnimationOn.setChecked(Settings.System.getInt(resolver,
-                Settings.System.ELECTRON_BEAM_ANIMATION_ON, 0) == 1);
         mElectronBeamAnimationOff.setChecked(Settings.System.getInt(resolver,
                 Settings.System.ELECTRON_BEAM_ANIMATION_OFF, 1) == 1);
 
-        mElectronBeamAnimationOn = (CheckBoxPreference) findPreference(KEY_ELECTRON_BEAM_ANIMATION_ON);
-        if(getResources().getInteger(com.android.internal.R.integer.config_screenOnAnimation) >= 0) {
-            mElectronBeamAnimationOn.setChecked(Settings.System.getInt(resolver,
-                    Settings.System.ELECTRON_BEAM_ANIMATION_ON, 0) == 1);
-        } else {
-            getPreferenceScreen().removePreference(mElectronBeamAnimationOn);
-        }
         mElectronBeamAnimationOff = (CheckBoxPreference) findPreference(KEY_ELECTRON_BEAM_ANIMATION_OFF);
         if(getResources().getBoolean(com.android.internal.R.bool.config_screenOffAnimation)) {
             mElectronBeamAnimationOff.setChecked(Settings.System.getInt(resolver,
@@ -199,11 +187,10 @@ public class DisplaySettings extends SettingsPreferenceFragment implements
         } else {
             getPreferenceScreen().removePreference(mElectronBeamAnimationOff);
         }
-        if(getResources().getInteger(com.android.internal.R.integer.config_screenOnAnimation) < 0 &&
-              !getResources().getBoolean(com.android.internal.R.bool.config_screenOffAnimation)) {
+        if(!getResources().getBoolean(com.android.internal.R.bool.config_screenOffAnimation)) {
             getPreferenceScreen().removePreference((PreferenceCategory) findPreference(KEY_ELECTRON_BEAM_CATEGORY_ANIMATION));
         }
-*/
+
         int removeWakeupCategory=0;
         mVolumeWake = (CheckBoxPreference) findPreference(KEY_VOLUME_WAKE);
         if (mVolumeWake != null) {
@@ -423,10 +410,6 @@ public class DisplaySettings extends SettingsPreferenceFragment implements
         if (preference == mAccelerometer) {
             RotationPolicy.setRotationLockForAccessibility(
                     getActivity(), !mAccelerometer.isChecked());
-        } else if (preference == mElectronBeamAnimationOn) {
-            Settings.System.putInt(getContentResolver(), Settings.System.ELECTRON_BEAM_ANIMATION_ON,
-                    mElectronBeamAnimationOn.isChecked() ? 1 : 0);
-            return true;
         } else if (preference == mElectronBeamAnimationOff) {
             Settings.System.putInt(getContentResolver(), Settings.System.ELECTRON_BEAM_ANIMATION_OFF,
                     mElectronBeamAnimationOff.isChecked() ? 1 : 0);
