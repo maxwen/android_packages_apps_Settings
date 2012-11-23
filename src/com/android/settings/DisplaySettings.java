@@ -177,13 +177,6 @@ public class DisplaySettings extends SettingsPreferenceFragment implements
             }
         }
 
-        //mElectronBeamAnimationOn = (CheckBoxPreference) findPreference(KEY_ELECTRON_BEAM_ANIMATION_ON);
-        mElectronBeamAnimationOff = (CheckBoxPreference) findPreference(KEY_ELECTRON_BEAM_ANIMATION_OFF);
-        //mElectronBeamAnimationOn.setChecked(Settings.System.getInt(resolver,
-        //        Settings.System.ELECTRON_BEAM_ANIMATION_ON, 0) == 1);
-        mElectronBeamAnimationOff.setChecked(Settings.System.getInt(resolver,
-                Settings.System.ELECTRON_BEAM_ANIMATION_OFF, 1) == 1);
-
         /*mElectronBeamAnimationOn = (CheckBoxPreference) findPreference(KEY_ELECTRON_BEAM_ANIMATION_ON);
         if(getResources().getInteger(com.android.internal.R.integer.config_screenOnAnimation) >= 0) {
             mElectronBeamAnimationOn.setChecked(Settings.System.getInt(resolver,
@@ -194,7 +187,7 @@ public class DisplaySettings extends SettingsPreferenceFragment implements
         mElectronBeamAnimationOff = (CheckBoxPreference) findPreference(KEY_ELECTRON_BEAM_ANIMATION_OFF);
         if(getResources().getBoolean(com.android.internal.R.bool.config_screenOffAnimation)) {
             mElectronBeamAnimationOff.setChecked(Settings.System.getInt(resolver,
-                    Settings.System.ELECTRON_BEAM_ANIMATION_OFF, 1) == 1);
+                    Settings.System.ELECTRON_BEAM_ANIMATION_OFF, 0) == 1);
         } else {
             getPreferenceScreen().removePreference(mElectronBeamAnimationOff);
         }
