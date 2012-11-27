@@ -28,6 +28,9 @@ import com.android.settings.Utils;
 
 import java.util.Arrays;
 import java.util.List;
+import java.io.File;
+
+import com.android.settings.DisplaySettings;
 
 public class BootReceiver extends BroadcastReceiver {
 
@@ -73,6 +76,8 @@ public class BootReceiver extends BroadcastReceiver {
                 SystemProperties.set(KSM_SETTINGS_PROP, "false");
             }
         }
+
+        configureSweep2Wake(ctx);
     }
 
     private void configureCPU(Context ctx) {
@@ -154,6 +159,14 @@ public class BootReceiver extends BroadcastReceiver {
         if(!volts.isEmpty()){
             VoltageControlSettings.applyVoltages(volts);            
             Log.d(TAG, "Voltage settings restored.");
+        }
+    }
+
+    private void configureSweep2Wake(Context ctx) {
+        if (Utils.fileExists(DisplaySettings.SWEEP2WAKE_FILE)) {
+            SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(ctx);
+            int sweep2Wake = prefs.getInt(DisplaySettings.SWEEP2WAKE_WAKE_VALUE, 1);
+            Utils.fileWriteOneLine(DisplaySettings.SWEEP2WAKE_FILE, sweep2Wake == 1 ? "1" : "0");
         }
     }
 

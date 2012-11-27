@@ -86,4 +86,10 @@
             android:summary="@string/pref_volume_wake_summary"
             android:defaultValue="false" />
 
+        <CheckBoxPreference
+            android:key="pref_sweep2wake_wake"
+            android:title="@string/pref_sweep2wake_wake_title"
+            android:summary="@string/pref_sweep2wake_wake_summary"
+            android:defaultValue="false" />
+
 </PreferenceScreen>
