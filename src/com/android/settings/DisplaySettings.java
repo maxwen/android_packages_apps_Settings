@@ -210,7 +210,9 @@ public class DisplaySettings extends SettingsPreferenceFragment implements
 
         mSweep2WakeWake = (CheckBoxPreference) findPreference(SWEEP2WAKE_WAKE);
         if (mSweep2WakeWake != null) {
-            if (!getResources().getBoolean(R.bool.config_show_sweep2WakeWake) || !Utils.fileExists(SWEEP2WAKE_FILE)) {
+            if (!getResources().getBoolean(R.bool.config_show_sweep2WakeWake) 
+                || !Utils.fileExists(SWEEP2WAKE_FILE)
+                || !new File(DisplaySettings.SWEEP2WAKE_FILE).canWrite()) {
                 getPreferenceScreen().removePreference(mSweep2WakeWake);
                 removeWakeupCategory=removeWakeupCategory+1;
             } else {
